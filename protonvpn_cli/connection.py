@@ -23,7 +23,7 @@ from .utils import (
 )
 # Constants
 from .constants import (
-    CONFIG_DIR, OVPN_FILE, PASSFILE, CONFIG_FILE
+    CONFIG_DIR, OVPN_FILE, PASSFILE, CONFIG_FILE, SERVER_FEATURES
 )
 
 
@@ -57,12 +57,6 @@ def dialog():
 
     pull_server_data()
 
-    features = {
-        1: "Secure-Core",
-        2: "Tor",
-        4: "P2P",
-        8: "Streaming",
-    }
     server_tiers = {0: "F", 1: "B", 2: "P"}
 
     servers = get_servers()
@@ -81,10 +75,10 @@ def dialog():
         country_features = []
         for server in countries[country]:
             feat = int(get_server_value(server, "Features", servers))
-            for bit_flag in features:
+            for bit_flag in SERVER_FEATURES:
                 if (feat & bit_flag) != 0:
-                    if not features[bit_flag] in country_features:
-                        country_features.append(features[bit_flag])
+                    if not SERVER_FEATURES[bit_flag] in country_features:
+                        country_features.append(SERVER_FEATURES[bit_flag])
 
         if len(country_features) == 0:
             country_features.append("Normal")
@@ -109,9 +103,9 @@ def dialog():
 
         servers_features = []
         feat = int(get_server_value(servername, 'Features', servers))
-        for bit_flag in features:
+        for bit_flag in SERVER_FEATURES:
             if (feat & bit_flag) != 0:
-                servers_features.append(features[bit_flag])
+                servers_features.append(SERVER_FEATURES[bit_flag])
 
         if len(servers_features) == 0:
             servers_features.append("Normal")
@@ -412,8 +406,6 @@ def status():
     ip, isp = get_ip_info()
 
     # Collect Information
-    all_features = {0: "Normal", 1: "Secure-Core", 2: "Tor", 4: "P2P"}
-
     logger.debug("Collecting status information")
     country_code = get_server_value(connected_server, "ExitCountry", servers)
     country = get_country_name(country_code)
@@ -441,7 +433,7 @@ def status():
         + "Time:         {0}\n".format(connection_time)
         + "IP:           {0}\n".format(ip)
         + "Server:       {0}\n".format(connected_server)
-        + "Features:     {0}\n".format(all_features.get(feature, f"Unknown feature '{feature}'"))
+        + "Features:     {0}\n".format(SERVER_FEATURES.get(feature, f"Unknown feature '{feature}'"))
         + "Protocol:     {0}\n".format(connected_protocol.upper())
         + "Kill Switch:  {0}\n".format(killswitch_status)
         + "Country:      {0}\n".format(country)
