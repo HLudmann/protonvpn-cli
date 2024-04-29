@@ -25,7 +25,7 @@
       in
       {
         devShells.default = pkgs.mkShellNoCC {
-          packages = [ pythonEnv ];
+          packages = [ pythonEnv pkgs.openvpn ];
 
           shellHook = ''
             export PYTHONPATH="${pythonEnv}/bin/python"
