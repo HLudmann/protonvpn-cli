@@ -12,8 +12,8 @@ import zlib
 # External Libraries
 from dialog import Dialog
 # protonvpn-cli Functions
-from .logger import logger
-from .utils import (
+from protonvpn_cli.logger import logger
+from protonvpn_cli.utils import (
     check_init, pull_server_data, is_connected,
     get_servers, get_server_value, get_config_value,
     set_config_value, get_ip_info, get_country_name,
@@ -22,14 +22,14 @@ from .utils import (
     is_ipv6_disabled, patch_passfile
 )
 # Constants
-from .constants import (
+from protonvpn_cli.constants import (
     CONFIG_DIR, OVPN_FILE, PASSFILE, CONFIG_FILE, SERVER_FEATURES
 )
 
 
 def dialog():
     """Connect to a server with a dialog menu."""
-    def show_dialog(headline, choices, stop=False):
+    def show_dialog(headline, choices, stop: bool = False):
         """Show the dialog and process response."""
         d = Dialog(dialog="dialog")
 
@@ -545,7 +545,7 @@ def openvpn_connect(servername, protocol):
     with open(CONFIG_FILE, "w+") as f:
         config.write(f)
 
-    check_update()
+    # check_update()
 
 
 def manage_dns(mode, dns_server=False):
